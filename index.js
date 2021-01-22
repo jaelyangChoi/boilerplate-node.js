@@ -17,6 +17,7 @@ app.post("/register", (req, res) => {
   //회원 가입할 때 필요한 정보들을 client에게 가져오면
   //그것들을 db에 넣어준다.
   const user = new User(req.body); //json으로 받는 경우
+
   //User 모델에 저장 (mongodb의 메소드)
   user.save((err, userInfo) => {
     if (err) return res.json({ success: false, err });
