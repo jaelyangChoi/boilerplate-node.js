@@ -1,24 +1,27 @@
 const express = require("express");
 const app = express();
 const port = 5000;
+const { User } = require("./models/User");
+const bodyParser = require("body-parser"); //body data를 parsing해서 req.body로 출력해줌
+const mongoose = require("./lib/db.js");
 
-const db_config = require("./config/mongoose.json");
-const mongoose = require("mongoose");
-mongoose
-  .connect(
-    `mongodb+srv://jaelyang:${db_config.password}@boilerplate.rgdkh.mongodb.net/<dbname>?retryWrites=true&w=majority`,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: false,
-    }
-  )
-  .then(() => console.log("successfully connected to mongodb"))
-  .catch((err) => console.log(err));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+//endpoint register
+app.post("/register", (req, res) => {
+  //회원 가입할 때 필요한 정보들을 client에게 가져오면
+  //그것들을 db에 넣어준다.
+  const user = new User(req.body);
+  //User 모델에 저장 (mongodb의 메소드)
+  user.save((err, userInfo) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).json({ success: true, userInfo });
+  });
 });
 
 app.listen(port, () => {
