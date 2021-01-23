@@ -1,20 +1,20 @@
 const express = require("express");
 const app = express();
 const port = 5000;
-const { User } = require("./models/User"); //객체를 반환하는 것이므로. {} 속 알맹이를 User로 가리키는 효과. User=Model{User}
 const bodyParser = require("body-parser"); //body data를 parsing해서 req.body로 출력해줌
 const cookieParser = require("cookie-parser");
-const mongoose = require("./lib/db.js");
-
+const mongoose = require("./lib/db"); //없으면 실행이 안됨
+const { User } = require("./models/User"); //객체를 반환하는 것이므로. {} 속 알맹이를 User로 가리키는 효과. User=Model{User}
+const { auth } = require("./middleware/auth");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-
+app.use(cookieParser());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
 //endpoint register
-app.post("/register", (req, res) => {
+app.post("/api/user/register", (req, res) => {
   //회원 가입할 때 필요한 정보들을 client에게 가져오면 db에 넣어준다.
 
   //그때 그때 user 모델 생성
@@ -27,7 +27,7 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.post("/login", (req, res) => {
+app.post("/api/user/login", (req, res) => {
   //요청된 이메일이 DB에 있는지 찾는다.
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user)
@@ -58,6 +58,20 @@ app.post("/login", (req, res) => {
   });
 });
 
+//로그인 -> 토큰 발급(쿠키) -> 인증
+app.get("/api/user/auth", auth, (req, res) => {
+  //여기까지 왔다는 것은 미들웨어 auth를 통과했고 authentication이 true라는 것.
+  res.status(200).json({
+    _id: req.user._id, //response로 id 주는 거랑 쿠키로 id 주는 거랑 달라! res는 저장 안된다!
+    isAdmin: req.user.role === 0 ? false : true,
+    isAuth: true,
+    email: req.user.email,
+    name: req.user.name,
+    lastname: req.user.lastname,
+    role: req.user.role,
+    image: req.user.image,
+  });
+});
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

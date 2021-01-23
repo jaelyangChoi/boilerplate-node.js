@@ -74,7 +74,7 @@ userSchema.methods.generateToken = function (callback) {
   let user = this;
   let token = jwt.sign(user._id.toHexString(), "secretToken");
   //user._id 와 'secretToken'을 합하여 token을 만든다.
-  //-> 이후 'secretToken'을 이용해 토큰으로부터 user._id 찾는다!!
+  //-> 이후 'secretToken'을 복호화에 이용해 토큰으로부터 user._id 찾는다!!
 
   user.token = token;
   user.save(function (err, user) {
@@ -82,6 +82,20 @@ userSchema.methods.generateToken = function (callback) {
     callback(null, user);
   });
 };
+
+userSchema.statics.findByToken = function (token, callback) {
+  let user = this;
+  //토큰을 decode한다. -> user._id가 나온다.
+  jwt.verify(token, "secretToken", function (err, decoded) {
+    //유저 아이디를 이용해서 유저를 찾은 다음에
+    //클라이언트에서 가져온 token과 DB에 보관된 토큰이 일치하는지 확인
+    user.findOne({ _id: decoded, token: token }, function (err, user) {
+      if (err) return callback(err);
+      callback(null, user);
+    });
+  });
+};
+
 /*
 model: 스키마를 통해 만드는 인스턴스
 model은 데이터베이스에서 데이터를 읽고, 생성하고, 수정하는 프로그래밍 인터페이스를 정의
@@ -89,5 +103,6 @@ model을 사용하여 데이터를 데이터베이스에 저장하거나 조회 
 */
 const User = mongoose.model("User", userSchema); //모델의 이름과 스키마
 //각 User 객체는 각자의 schema를 갖으며, userSchema를 이용해 객체화했으므로, userSchema의 메소드를 쓸 수 있다.
-
 module.exports = { User }; //프로퍼티: User, 값: Model { User } 객체
+//스키마(클래스 같은 것)->모델(프로그래밍 인터페이스)
+//외부에서 프로그래밍 과정에 모델의 메소드 활용 -> 사실은 스키마에 붙인 메소드
