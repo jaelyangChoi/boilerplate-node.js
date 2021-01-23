@@ -14,7 +14,7 @@ app.get("/", (req, res) => {
 });
 
 //endpoint register
-app.post("/api/user/register", (req, res) => {
+app.post("/api/users/register", (req, res) => {
   //회원 가입할 때 필요한 정보들을 client에게 가져오면 db에 넣어준다.
 
   //그때 그때 user 모델 생성
@@ -27,7 +27,7 @@ app.post("/api/user/register", (req, res) => {
   });
 });
 
-app.post("/api/user/login", (req, res) => {
+app.post("/api/users/login", (req, res) => {
   //요청된 이메일이 DB에 있는지 찾는다.
   User.findOne({ email: req.body.email }, (err, user) => {
     if (!user)
@@ -59,7 +59,8 @@ app.post("/api/user/login", (req, res) => {
 });
 
 //로그인 -> 토큰 발급(쿠키) -> 인증
-app.get("/api/user/auth", auth, (req, res) => {
+app.get("/api/users/auth", auth, (req, res) => {
+  //auth: 쿠키 일치 확인하고 user의 정보를 req에 넣음
   //여기까지 왔다는 것은 미들웨어 auth를 통과했고 authentication이 true라는 것.
   res.status(200).json({
     _id: req.user._id, //response로 id 주는 거랑 쿠키로 id 주는 거랑 달라! res는 저장 안된다!
@@ -72,6 +73,16 @@ app.get("/api/user/auth", auth, (req, res) => {
     image: req.user.image,
   });
 });
+
+//로그아웃 - DB의 토큰 삭제
+//=>쿠키의 토큰과 일치하지 않아 인증 X -> 로그인 풀림
+app.get("/api/users/logout", auth, (req, res) => {
+  User.findOneAndUpdate({ _id: req.user._id }, { token: "" }, (err, user) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).send({ success: true });
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

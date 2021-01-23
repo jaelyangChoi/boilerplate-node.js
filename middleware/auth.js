@@ -1,3 +1,4 @@
+//로그인 되었는지, 권한이 있는지 체크 using token(cookie)
 const { User } = require("../models/User");
 //인증 처리
 let auth = (req, res, next) => {
