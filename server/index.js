@@ -60,7 +60,7 @@ app.post("/api/users/login", (req, res) => {
 
 //로그인 -> 토큰 발급(쿠키) -> 인증
 app.get("/api/users/auth", auth, (req, res) => {
-  //auth: 쿠키 일치 확인하고 user의 정보를 req에 넣음
+  //auth: 토큰 일치 여부 확인하고 user의 정보를 req에 넣음
   //여기까지 왔다는 것은 미들웨어 auth를 통과했고 authentication이 true라는 것.
   res.status(200).json({
     _id: req.user._id, //response로 id 주는 거랑 쿠키로 id 주는 거랑 달라! res는 저장 안된다!
