@@ -13,6 +13,8 @@ app.get("/", (req, res) => {
   res.send("Hello World!");
 });
 
+app.get("/api/hello", (req, res) => res.send("안녕하세요~"));
+
 //endpoint register
 app.post("/api/users/register", (req, res) => {
   //회원 가입할 때 필요한 정보들을 client에게 가져오면 db에 넣어준다.
@@ -52,7 +54,7 @@ app.post("/api/users/login", (req, res) => {
         res
           .cookie("x_auth", user.token)
           .status(200)
-          .json({ loginSucces: true, userId: user._id });
+          .json({ loginSuccess: true, userId: user._id });
       });
     });
   });
