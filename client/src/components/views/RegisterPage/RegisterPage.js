@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../../_actions/user_action";
+import { registerUser } from "../../../_actions/user_action";
 
 function RegisterPage(props) {
   const dispatch = useDispatch();
@@ -21,15 +21,21 @@ function RegisterPage(props) {
   const onSubmitHandler = (event) => {
     event.preventDefault(); //페이지 reflesh 방지
 
+    if (Password !== ConfirmPassword)
+      return alert("비밀번호와 비밀번호 확인이 일치해야 합니다!");
+
     let body = {
+      name: Name,
       email: Email,
       password: Password,
     };
 
-    //dispatch를 이용해서 loginUser라는 aciton을 취한다.
-    dispatch(loginUser(body)).then((response) => {
-      if (response.payload.loginSuccess) props.history.push("/");
-      else alert("Error");
+    //dispatch를 이용해서 registerUser라는 aciton을 취하고, axios로 server에 요청한다.
+    dispatch(registerUser(body)).then((response) => {
+      console.log("dispatch-register : response : ", response);
+      console.log("dispatch-register : response.payload : ", response.payload); //{success:true, userInfo:{}}
+      if (response.payload.success) props.history.push("/login");
+      else alert("Failed to sign up");
     });
   };
 
@@ -51,7 +57,7 @@ function RegisterPage(props) {
         <input type="email" value={Email} onChange={onEmailHandler} />
         <label>Name</label>
         <input type="text" value={Name} onChange={onNameHandler} />
-        <label>Password</label>
+        <label>Password (5자리 이상)</label>
         <input type="password" value={Password} onChange={onPasswordHandler} />
         <label>Confirm Password</label>
         <input

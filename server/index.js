@@ -17,7 +17,7 @@ app.get("/api/hello", (req, res) => res.send("안녕하세요~"));
 
 //endpoint register
 app.post("/api/users/register", (req, res) => {
-  //회원 가입할 때 필요한 정보들을 client에게 가져오면 db에 넣어준다.
+  //회원 가입할 때 필요한 정보들을 client에서 받아오면 db에 넣어준다.
 
   //그때 그때 user 모델 생성
   const user = new User(req.body); //json으로 받는 경우
@@ -52,7 +52,7 @@ app.post("/api/users/login", (req, res) => {
 
         //쿠키에 토큰을 저장한다.
         res
-          .cookie("x_auth", user.token)
+          .cookie("x_auth", user.token) //front->client로 response.header를 통해 전달됨.
           .status(200)
           .json({ loginSuccess: true, userId: user._id });
       });

@@ -27,7 +27,7 @@ function LoginPage(props) {
 
     //dispatch를 이용해서 loginUser라는 aciton을 취한다.
     dispatch(loginUser(body)).then((response) => {
-      console.log("result: ", response.payload.loginSuccess);
+      console.log("dispatch(loginUser) - response ", response);
       if (response.payload.loginSuccess) props.history.push("/");
       else alert("Error");
     });

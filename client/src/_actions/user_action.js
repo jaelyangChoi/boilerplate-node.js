@@ -1,5 +1,18 @@
 import axios from "axios";
-import { LOGIN_USER } from "./types";
+import { LOGIN_USER, REGISTER_USER } from "./types";
+
+export function registerUser(dataToSubmit) {
+  //서버에서 받은 데이터를 request에 저장
+  const request = axios
+    .post("/api/users/register", dataToSubmit)
+    .then((response) => response.data);
+  console.log("register-request: ", request); //promise
+  //reducer로 보내 nextState을 만든다.
+  return {
+    type: REGISTER_USER,
+    payload: request,
+  };
+}
 
 export function loginUser(dataToSubmit) {
   //서버에서 받은 데이터를 request에 저장
