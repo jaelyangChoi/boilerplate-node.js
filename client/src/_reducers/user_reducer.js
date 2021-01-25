@@ -1,4 +1,4 @@
-import { LOGIN_USER, REGISTER_USER } from "../_actions/types";
+import { LOGIN_USER, REGISTER_USER, AUTH_USER } from "../_actions/types";
 
 //state + action => nextSate로 변경
 export default function (state = {}, action) {
@@ -9,6 +9,9 @@ export default function (state = {}, action) {
     case REGISTER_USER:
       console.log("reducer: ", action.payload);
       return { ...state, registerSuccess: action.payload };
+    case AUTH_USER:
+      console.log("reducer: ", action.payload);
+      return { ...state, userData: action.payload };
     default:
       return state;
   }
