@@ -7,7 +7,7 @@ mongoose
     useCreateIndex: true,
     useFindAndModify: false,
   })
-  .then(() => console.log("successfully connected to mongodb"))
+  .then(() => console.log("MongoDB Connected..."))
   .catch((err) => console.log(err));
 
 module.exports = mongoose;

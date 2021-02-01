@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const jwt = require("jsonwebtoken");
+const moment = require("moment");
 /*
 schema: 해당 컬렉션의 document에 어떤 종류의 값이 들어가는지 정의
 schema는 document의 구조가 어떻게 생겼는지 알려주는 역할.
@@ -18,7 +19,7 @@ const userSchema = mongoose.Schema({
   },
   password: {
     type: String,
-    minlength: 5,
+    minlength: 4,
   },
   lastname: {
     type: String,
@@ -33,6 +34,7 @@ const userSchema = mongoose.Schema({
     type: String,
   },
   tokenExp: {
+    //expiraton
     type: Number,
   },
 });
@@ -75,8 +77,10 @@ userSchema.methods.generateToken = function (callback) {
   let token = jwt.sign(user._id.toHexString(), "secretToken");
   //user._id 와 'secretToken'을 합하여 token을 만든다.
   //-> 이후 'secretToken'을 복호화에 이용해 토큰으로부터 user._id 찾는다!!
-
+  let oneHour = moment().add(1, "hour").valueOf();
+  user.tokenExp = oneHour;
   user.token = token;
+
   user.save(function (err, user) {
     if (err) return callback(err);
     callback(null, user);
