@@ -45,7 +45,7 @@ module.exports = function (app) {
 };
 ```
 
-> https://look-forest.tistory.com/12에 정리해두었다.
+> https://look-forest.tistory.com/12 에 정리해두었다.
 </br>
 
 ## 주요 기능
