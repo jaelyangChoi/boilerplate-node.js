@@ -15,6 +15,24 @@ node.js 기반 웹 개발을 위한 boilerplate code.
 
 </br>
 
+## 주요 기능 및 원리
+- start : console에 "npm run dev" 명령어 입력 (concurrently를 이용해서 프론트, 백 서버 한꺼번에 켜짐)
+
+- 회원가입 : 회원 가입할 때 필요한 정보들을 프론트에서 받아오면 db에 넣어준다.
+  
+- 로그인 : 아이디 비밀번호가 일치하면 **쿠키에 token**을 넣어준다.
+
+- 로그아웃 : **DB token 값 삭제** => 쿠키의 토큰과 일치하지 않아 인증 X => 로그인 풀림
+
+- 인증 : **로그인 여부, 접근 권한에 따라 페이지 리다이렉션**
+  ```
+  app.js에서 routing하기 전, hoc/auth 의 통제를 받는다. 
+  -> user_action에서 백엔드로 인증 여부 요청 
+  -> request의 token을 이용해 user 정보를 조회
+  -> 조회에 성공하면 response로 user 정보와 isAuth=true를 담아 보내준다
+  ```
+
+</br>
 
 ## 사용 기술
 - front-end : React.js(UI 라이브러리), Redux.js(상태 관리 라이브러리)
@@ -45,22 +63,6 @@ module.exports = function (app) {
 };
 ```
 
-> https://look-forest.tistory.com/12 에 정리해두었다.
+> https://look-forest.tistory.com/12 에 개괄적으로 정리해두었다.
 </br>
 
-## 주요 기능
-- start : console에 "npm run dev" 명령어 입력 (concurrently를 이용해서 프론트, 백 서버 한꺼번에 켜짐)
-
-- 회원가입 : 회원 가입할 때 필요한 정보들을 프론트에서 받아오면 db에 넣어준다.
-  
-- 로그인 : 아이디 비밀번호가 일치하면 **쿠키에 token**을 넣어준다.
-
-- 로그아웃 : **DB token 값 삭제** => 쿠키의 토큰과 일치하지 않아 인증 X => 로그인 풀림
-
-- 인증 : **로그인 여부, 접근 권한에 따라 페이지 리다이렉션**
-  ```
-  app.js에서 routing하기 전, hoc/auth 의 통제를 받는다. 
-  -> user_action에서 백엔드로 인증 여부 요청 
-  -> request의 token을 이용해 user 정보를 조회
-  -> 조회에 성공하면 response로 user 정보와 isAuth=true를 담아 보내준다
-  ```
