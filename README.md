@@ -1,15 +1,15 @@
-# boilerplate-node.js
-node.js 기반 웹 개발을 위한 boilerplate code.
+# Boilerplate - Node.js
+Node.js 기반 웹 개발을 위한 boilerplate code
 
 </br>
 
 
 
 ## 목적
-1. boiler plate 만들기  
-2. front-back 연동 방식 이해하기
+1. Boilerplate 만들기  
+2. Front-Back 연동 방식 이해하기
 
-### boilerplate란?
+### Boilerplate란?
 최소한의 변경으로 여러 곳에서 재사용되며, 반복적으로 비슷한 형태를 띄는 코드.
 본 프로그램의 목적은 앞으로 node.js 기반 웹 프로그램을 만들때 공통적으로 사용할 **기본 틀과 주요 기능을 미리 만들어두고 빠르게 재사용**하기 위함이다.
 
