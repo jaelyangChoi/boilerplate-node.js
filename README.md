@@ -1,5 +1,6 @@
 # Boilerplate - Node.js
-Node.js 기반 웹 개발을 위한 boilerplate code
+Node.js 기반 웹 개발을 위한 boilerplate code   
+개인 프로젝트, 2021.02~2021.02
 
 </br>
 
@@ -46,22 +47,26 @@ Node.js 기반 웹 개발을 위한 boilerplate code
 *프론트에서 클라이언트의 요청을 처리하고 필요에 따라 백서버로 데이터를 요청한다.*
 ![img](https://user-images.githubusercontent.com/55947154/106376266-02248b80-63d7-11eb-94b2-3598979477b2.png)
 
-- React JS 부분에서 서버로 Request를 보낼 때 axios 사용
-- CORS(Cross-Origin Resource sharing) 문제를 해결하기 위해 http-proxy-middleware를 사용해 proxy 설정
-![proxy](https://user-images.githubusercontent.com/55947154/106376305-66dfe600-63d7-11eb-8343-39cde1c05cae.png)
-```
-const { createProxyMiddleware } = require("http-proxy-middleware");
+- 프론트에서 백 서버로 Request를 보낼 때 axios 사용   
 
-module.exports = function (app) {
-  app.use(
-    "/api",
-    createProxyMiddleware({
-      target: "http://localhost:5000",
-      changeOrigin: true,
-    })
-  );
-};
-```
+</br>
+
+- CORS(Cross-Origin Resource sharing) 문제를 해결하기 위해 http-proxy-middleware를 사용해 proxy 설정
+    ![proxy](https://user-images.githubusercontent.com/55947154/106376305-66dfe600-63d7-11eb-8343-39cde1c05cae.png)
+    
+    ```
+    const { createProxyMiddleware } = require("http-proxy-middleware");
+
+    module.exports = function (app) {
+      app.use(
+        "/api",
+        createProxyMiddleware({
+          target: "http://localhost:5000",
+          changeOrigin: true,
+        })
+      );
+    };
+    ```
 
 > https://look-forest.tistory.com/12 에 개괄적으로 정리해두었다.
 </br>
