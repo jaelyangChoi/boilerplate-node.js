@@ -49,8 +49,6 @@ Node.js 기반 웹 개발을 위한 boilerplate code
 
 - 프론트에서 백 서버로 Request를 보낼 때 axios 사용   
 
-</br>
-
 - CORS(Cross-Origin Resource sharing) 문제를 해결하기 위해 http-proxy-middleware를 사용해 proxy 설정
     ![proxy](https://user-images.githubusercontent.com/55947154/106376305-66dfe600-63d7-11eb-8343-39cde1c05cae.png)
     
